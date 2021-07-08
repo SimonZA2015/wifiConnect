@@ -31,10 +31,14 @@ class MainWindow(QMainWindow):
         # self.inputSsid.setPlaceholderText('Название сети')
         self.inputSsid.valueChanged.connect(self.onChangedValue)
         self.inputPass.setPlaceholderText('Пароль от сети')
-        go = QPushButton('Подключиться')
-        self.check = QCheckBox('С проверкой на интернет')
+        if tools.system.compatibility(self):
+            go = QPushButton('Подключиться')
+            go.clicked.connect(self.goto)
+        else:
+            go = QPushButton('Не поддерживаемая система')
+            go.setDisabled(True)
 
-        go.clicked.connect(self.goto)
+        self.check = QCheckBox('С проверкой на интернет')
 
         vbox.addWidget(label)
         vbox.addWidget(self.inputSsid)
